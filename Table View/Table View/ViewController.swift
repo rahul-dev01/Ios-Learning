@@ -36,6 +36,9 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
         
     }
     
+    
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let desObject = segue.destination as! CellDataViewController
         desObject.cellValue = countries[selectedIndex]
