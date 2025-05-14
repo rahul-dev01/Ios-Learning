@@ -12,6 +12,7 @@ class ViewControllerTableView: UIViewController , UITableViewDelegate, UITableVi
     
     var city = ["Goa" ,"Mumbai" , "Delhi"]
     
+    
     @IBOutlet weak var tableView: UITableView!
     
     
@@ -23,20 +24,20 @@ class ViewControllerTableView: UIViewController , UITableViewDelegate, UITableVi
         return city.count
     }
     
-    var selectedIndex = 0
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellObj = tableView.dequeueReusableCell(withIdentifier: "cityList", for: IndexPath())
         cellObj.textLabel?.text = city[indexPath.row]
-        selectedIndex = indexPath.row
         return cellObj
     }
     
     
     @IBOutlet weak var showSelectedCity: UILabel!
     
+    var selectedIndex = 0
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         showSelectedCity.text = city[indexPath.row]
-        
+        selectedIndex = indexPath.row
         performSegue(withIdentifier: "selectCell", sender: nil)
     }
     
@@ -45,10 +46,18 @@ class ViewControllerTableView: UIViewController , UITableViewDelegate, UITableVi
     @IBOutlet weak var showFilledValueLbl: UILabel!
     
     @IBAction func saveBtn(_ sender: Any) {
-        showFilledValueLbl.text = fillValue.text
-        city.append(String(fillValue!.text))
-        tableView.reloadData()
+        if let newCity = fillValue.text , !newCity.isEmpty {
+            showFilledValueLbl.text = newCity
+            city.append(newCity)
+            tableView.reloadData()
+        }
+        else{
+            let alert = UIAlertController(title: "Empty Input", message: "Please enter a city name.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
     }
+    
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
